@@ -1,6 +1,9 @@
 ## Projekt u sklopu diplomskog rada na temu "Uzorci dizajna za podatkovni sloj"
 Ovaj repozitorij sadrži aplikaciju koja je rađena u sklopu diplomskog rada na temu "Uzorci dizajna za podatkovni sloj." Radi se minimalističkoj aplikaciji za upravljanje ljudskim resursima koja pokazuje implementaciju odabranih uzoraka dizajna opisani u diplomskog radu, a koji su preuzeti iz knjige Martina Fowlera "Patterns of Enterprise Application Architecture."
 
+### Korištene tehnologije
+Aplikacija je rađena primjenom Java EE i vrtila se na TomEE poslužitelju. Klijentski dio je rađen pomoću *JavaServer Faces* tehnologije. Za bazu podataka korišten je Apache Derby. 
+
 ### Korišteni uzorci dizajna
 <dl>
 <dt><em>Data Mapper</em></dt>
