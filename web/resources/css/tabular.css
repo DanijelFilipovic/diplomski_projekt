@@ -1,0 +1,93 @@
+.tabular-container {
+	display: block;
+}
+
+.tabular {
+	position: relative;
+	width: 100%;
+	font-size: 0.85em;
+}
+
+.tabular,
+.tabular th,
+.tabular td {
+	border-collapse: collapse;
+	border: solid 1px #000000;
+}
+
+.tabular th,
+.tabular td {
+	height: 2em;
+}
+
+.tabular th {
+	background-color: #A0A0A0;
+	font-variant: small-caps;
+}
+
+.tabular td {
+	padding-left: 0.5em;
+}
+
+.tabular td:only-child:empty {
+	display: none;
+}
+
+.tabular input[type=text],
+.tabular textarea {
+	width: 80%;
+}
+
+.tabular select option:disabled {
+	display: none;
+}
+
+.tabular textarea {
+	font-family: Helvetica, Arial, Verdana, DejaVu Sans, sans-serif;
+	font-size: 0.85em;
+	resize: none;
+}
+
+.w-5 {
+	width: 5%;
+}
+
+.w-10 {
+	width: 10%;
+}
+
+.w-15 {
+	width: 15%;
+}
+
+.w-20 {
+	width: 20%;
+}
+
+.w-25 {
+	width: 25%;
+}
+
+.w-30 {
+	width: 30%;
+}
+
+.w-35 {
+	width: 35%;
+}
+
+.w-40 {
+	width: 40%;
+}
+
+.w-45 {
+	width: 45%;
+}
+
+.w-50 {
+	width: 50%;
+}
+
+.w-flex {
+	flex: 1;
+}

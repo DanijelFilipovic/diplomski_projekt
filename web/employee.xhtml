@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+        <ui:composition template="./resources/template/app_template.xhtml">
+
+			<f:metadata>
+				<f:viewParam name="id" value="#{profileBean.id}"/>
+				<f:event type="preRenderView" listener="#{profileBean.loadEmployee()}"/>
+			</f:metadata>
+
+			<ui:define name="libraries">
+				<h:outputStylesheet library="css" name="profile.css"/>
+				<h:outputStylesheet library="css" name="jquery.timepicker.css"/>
+				<h:outputStylesheet library="css" name="jquery-ui.min.css"/>
+				<h:outputStylesheet library="css" name="jquery-ui.structure.min.css"/>
+				<h:outputStylesheet library="css" name="jquery-ui.theme.min.css"/>
+				<h:outputScript library="javascript" name="jquery-3.2.1.min.js"/>
+				<h:outputScript library="javascript" name="jquery.timepicker.min.js"/>
+				<h:outputScript library="javascript" name="jquery-ui.min.js"/>
+				<h:outputScript library="javascript" name="profile.js"/>
+			</ui:define>
+
+            <ui:define name="content">
+				<div class="employee-profile">
+					<div class="employee-controls">
+						<h:commandButton value="Profile" action="#{guiProfile.showProfilePanel()}">
+							<f:ajax render="employee-data"/>
+						</h:commandButton>
+						<h:commandButton value="Skills" action="#{guiProfile.showSkillsPanel()}">
+							<f:ajax render="employee-data"/>
+						</h:commandButton>
+						<h:commandButton value="Licenses" action="#{guiProfile.showLicensesPanel()}">
+							<f:ajax render="employee-data"/>
+						</h:commandButton>
+						<h:commandButton value="Training" action="#{guiProfile.showTrainingPanel()}">
+							<f:ajax render="employee-data"/>
+						</h:commandButton>
+						<h:commandButton value="Projects" action="#{guiProfile.showProjectsPanel()}">
+							<f:ajax render="employee-data"/>
+						</h:commandButton>
+					</div>
+
+					<h:panelGroup styleClass="employee-data" id="employee-data">
+
+						<!-- Panel with basic, editable, data on selected employee -->
+						<h:panelGroup id="profile-tab" rendered="#{guiProfile.profilePanelVisible}">
+							<div class="vertical-container">
+								<h:outputLabel for="first-name">First name</h:outputLabel>
+								<h:outputText styleClass="textfield" 
+											  value="#{profileBean.editableEmployee.entity.firstName}"
+											  rendered="#{not profileBean.editableEmployee.changeable}"/>
+								<h:inputText id="first-name"
+											 value="#{profileBean.firstName}"
+											 rendered="#{profileBean.editableEmployee.changeable}"/>
+
+								<h:outputLabel for="last-name">Last name</h:outputLabel>
+								<h:outputText styleClass="textfield"
+											  value="#{profileBean.editableEmployee.entity.lastName}"
+											  rendered="#{not profileBean.editableEmployee.changeable}"/>
+								<h:inputText id="last-name"
+											 value="#{profileBean.lastName}"
+											 rendered="#{profileBean.editableEmployee.changeable}"/>
+							</div>
+							<div class="vertical-container">
+								<h:outputLabel for="salary-amount">Salary</h:outputLabel>
+								<h:outputText styleClass="textfield" 
+											  value="#{profileBean.editableEmployee.entity.salary}"
+											  rendered="#{not profileBean.editableEmployee.changeable}"/>
+								<h:inputText id="salary-amount"
+											 value="#{profileBean.salaryAmount}"
+											 rendered="#{profileBean.editableEmployee.changeable}"/>
+								<h:selectOneMenu id="salary-currency"
+												 value="#{profileBean.salaryCurrency}"
+												 rendered="#{profileBean.editableEmployee.changeable}">
+									<f:selectItem itemLabel="" itemValue=""/>
+									<f:selectItem itemLabel="EUR" itemValue="EUR"/>
+									<f:selectItem itemLabel="GBP" itemValue="GBP"/>
+									<f:selectItem itemLabel="HRK" itemValue="HRK"/>
+									<f:selectItem itemLabel="USD" itemValue="USD"/>
+								</h:selectOneMenu>
+							</div>
+							<div class="vertical-container">
+								<fieldset>
+									<legend>Working hour</legend>
+									<div class="vertical-container">
+										<h:outputLabel for="working-hour-start">Start</h:outputLabel>
+										<h:outputText styleClass="textfield" 
+													  value="#{profileBean.editableEmployee.entity.workingHourStart}"
+													  rendered="#{not profileBean.editableEmployee.changeable}"/>
+										<h:inputText id="working-hour-start"
+													 value="#{profileBean.workingHourStart}"
+													 rendered="#{profileBean.editableEmployee.changeable}"/>
+									</div>
+									<div class="vertical-container">
+										<h:outputLabel for="working-hour-end">End</h:outputLabel>
+										<h:outputText styleClass="textfield" 
+													  value="#{profileBean.editableEmployee.entity.workingHourEnd}"
+													  rendered="#{not profileBean.editableEmployee.changeable}"/>
+										<h:inputText id="working-hour-end"
+													 value="#{profileBean.workingHourEnd}"
+													 rendered="#{profileBean.editableEmployee.changeable}"/>
+									</div>
+								</fieldset>
+							</div>
+							<div class="vertical-container">
+								<h:outputLabel style="width: 10em" for="employement-status">Employment status</h:outputLabel>
+								<h:outputText styleClass="textfield"
+											  value="#{profileBean.editableEmployee.entity.employmentStatus.name}"
+											  rendered="#{not profileBean.editableEmployee.changeable}"/>
+								<h:selectOneMenu id="employment_status"
+												 style="width: 13em"
+												 value="#{profileBean.employmentStatusID}"
+												 rendered="#{profileBean.editableEmployee.changeable}">
+									<f:selectItem itemValue="0" itemLabel=""/>
+									<f:selectItems value="#{employmentStatusBean.editableEntities}" var="ees"
+												   itemValue="#{ees.entity.id}" itemLabel="#{ees.entity.name}"/>
+								</h:selectOneMenu>
+							</div>
+							<div class="vertical-container">
+								<h:outputLabel style="width: 10em" for="organizational-unit">Organizational unit</h:outputLabel>
+								<h:outputText styleClass="textfield" 
+											  value="#{profileBean.editableEmployee.entity.organizationalUnit.name}"
+											  rendered="#{not profileBean.editableEmployee.changeable}"/>
+								<h:selectOneMenu id="organizational_unit"
+												 style="width: 13em"
+												 value="#{profileBean.organizationalUnitID}"
+												 rendered="#{profileBean.editableEmployee.changeable}">
+									<f:selectItem itemValue="0" itemLabel=""/>
+									<f:selectItems value="#{orgUnitBean.editableEntities}" var="eou"
+												   itemValue="#{eou.entity.id}" itemLabel="#{eou.entity.name}"/>
+								</h:selectOneMenu>
+							</div>
+							<div class="vertical-container">
+								<h:outputLabel style="width: 10em" for="job">Job</h:outputLabel>
+								<h:outputText styleClass="textfield" 
+											  value="#{profileBean.editableEmployee.entity.job.name}"
+											  rendered="#{not profileBean.editableEmployee.changeable}"/>
+								<h:selectOneMenu id="job"
+												 style="width: 13em"
+												 value="#{profileBean.jobID}"
+												 rendered="#{profileBean.editableEmployee.changeable}">
+									<f:selectItem itemValue="0" itemLabel=""/>
+									<f:selectItems value="#{jobBean.editableEntities}" var="ej"
+												   itemValue="#{ej.entity.id}" itemLabel="#{ej.entity.name}"/>
+								</h:selectOneMenu>
+							</div>
+							<h:commandButton style="margin-top: 2em;" 
+											 value="Edit" 
+											 rendered="#{not profileBean.editableEmployee.changeable}" 
+											 action="#{profileBean.enableEditing()}">
+								<f:ajax render="profile-tab" onevent="onAjaxEdit"/>
+							</h:commandButton>
+							<h:commandButton style="margin-top: 2em;" 
+											 value="Cancel" 
+											 rendered="#{profileBean.editableEmployee.changeable}"
+											 action="#{profileBean.cancelEditing()}">
+								<f:ajax render="profile-tab"/>
+							</h:commandButton>
+							<h:commandButton style="margin-top: 2em; margin-left: 1em;" 
+											 value="Update" 
+											 rendered="#{profileBean.editableEmployee.changeable}"
+											 action="#{profileBean.updateBasic()}">
+								<f:ajax execute="profile-tab" render="profile-tab"/>
+							</h:commandButton>
+						</h:panelGroup>
+
+						<!-- Panels that shows employee's selected skills -->
+						<h:panelGroup id="skills-tab" rendered="#{guiProfile.skillsPanelVisible}">
+							<h:selectOneMenu value="#{profileBean.skillID}" id="possible-skills" 
+											 style="min-width: 10em; margin-right: 1em; vertical-align: bottom;">
+								<f:selectItem itemValue="0" itemLabel=""/>
+								<f:selectItems value="#{skillBean.editableEntities}" var="es"
+											   itemValue="#{es.entity.id}" itemLabel="#{es.entity.name}"
+											   itemDisabled="#{profileBean.hasSkill(es.entity)}"/>
+							</h:selectOneMenu>
+							<h:commandButton value="Add selected skill" 
+											 action="#{profileBean.addSkill()}">
+								<f:ajax execute="possible-skills" render="skill-table possible-skills"/>
+							</h:commandButton>
+							<h:panelGroup id="skill-table" styleClass="tabular-container">
+								<h:dataTable value="#{profileBean.editableEmployee.entity.skills}" var="skill" 
+											 styleClass="tabular" style="margin-top: 2em;"
+											 columnClasses="w-5,w-flex,w-10">
+									<h:column>
+										<f:facet name="header">ID</f:facet>
+											#{skill.id}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Name</f:facet>
+											#{skill.name}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Options</f:facet>
+										<h:commandLink value="Remove" action="#{profileBean.removeSkill(skill)}"/>
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+						</h:panelGroup>
+
+						<!-- Panel that's shows employee's selected licenses -->
+						<h:panelGroup id="license-tab" rendered="#{guiProfile.licensesPanelVisible}">
+							<h:selectOneMenu value="#{profileBean.licenseID}" id="possible-licenses" 
+											 style="min-width: 10em; margin-right: 1em; vertical-align: bottom;">
+								<f:selectItem itemValue="0" itemLabel=""/>
+								<f:selectItems value="#{licenseBean.editableEntities}" var="el"
+											   itemValue="#{el.entity.id}" itemLabel="#{el.entity.name}"
+											   itemDisabled="#{profileBean.hasLicense(el.entity)}"/>
+							</h:selectOneMenu>
+							<h:inputText id="acquisition-date"
+										 value="#{profileBean.acquisitionDate}"
+										 style="margin-right: 1em; vertical-align: bottom;"/>
+							<h:commandButton value="Add selected license" action="#{profileBean.addLicense()}">
+								<f:ajax execute="possible-licenses acquisition-date" 
+										render="possible-licenses acquisition-date license-table"/>
+							</h:commandButton>
+							<h:panelGroup id="license-table" styleClass="tabular-container">
+								<h:dataTable value="#{profileBean.editableEmployee.entity.acquiredLicenses}" var="al" 
+											 styleClass="tabular" style="margin-top: 2em;"
+											 columnClasses="w-5,w-40,w-45,w-10">
+									<h:column>
+										<f:facet name="header">ID</f:facet>
+											#{al.license.id}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Name</f:facet>
+											#{al.license.name}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Acquisiton date</f:facet>
+											#{al.acquisitionDate.toString()}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Options</f:facet>
+										<h:commandLink value="Remove" action="#{profileBean.removeLicense(al)}"/>
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+							<script>onLicensePanelLoad()</script>
+						</h:panelGroup>
+
+						<!-- Panel that shows employee's selected training -->
+						<h:panelGroup id="training-tab" rendered="#{guiProfile.trainingPanelVisible}">
+							<h:selectOneMenu value="#{profileBean.trainingID}" id="possible-trainings" 
+											 style="min-width: 10em; margin-right: 1em; vertical-align: bottom;">
+								<f:selectItem itemValue="0" itemLabel=""/>
+								<f:selectItems value="#{trainingBean.editableEntities}" var="et"
+											   itemValue="#{et.entity.id}" itemLabel="#{et.entity.name}"
+											   itemDisabled="#{profileBean.hasTraining(et.entity)}"/>
+							</h:selectOneMenu>
+							<h:inputText id="start-date"
+										 value="#{profileBean.startDate}"
+										 style="margin-right: 1em; vertical-align: bottom;"/>
+							<h:inputText id="end-date"
+										 value="#{profileBean.endDate}"
+										 style="margin-right: 1em; vertical-align: bottom;"/>
+							<h:commandButton value="Add selected training" action="#{profileBean.addTraining()}">
+								<f:ajax execute="possible-trainings start-date end-date"
+										render="possible-trainings start-date end-date training-table"/>
+							</h:commandButton>
+							<h:panelGroup id="training-table" styleClass="tabular-container">
+								<h:dataTable value="#{profileBean.editableEmployee.entity.scheduledTrainings}" var="st" 
+											 styleClass="tabular" style="margin-top: 2em;"
+											 columnClasses="w-5,w-25,w-30,w-30,w-10">
+									<h:column>
+										<f:facet name="header">ID</f:facet>
+											#{st.training.id}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Name</f:facet>
+											#{st.training.name}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Start date</f:facet>
+											#{st.startDate}
+									</h:column>
+									<h:column>
+										<f:facet name="header">End date</f:facet>
+											#{st.endDate}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Options</f:facet>
+										<h:commandLink value="Remove" action="#{profileBean.removeTraining(st)}"/>
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+							<script>onTrainingPanelLoad()</script>
+						</h:panelGroup>
+
+						<!-- Panel that shows projects employee participates in. -->
+						<h:panelGroup id="projects-tab" rendered="#{guiProfile.projectsPanelVisible}">
+							<h:selectOneMenu value="#{profileBean.projectID}" id="possible-projects" 
+											 style="min-width: 10em; margin-right: 1em; vertical-align: bottom;">
+								<f:selectItem itemValue="0" itemLabel=""/>
+								<f:selectItems value="#{projectBean.editableEntities}" var="ep"
+											   itemValue="#{ep.entity.id}" itemLabel="#{ep.entity.name}"
+											   itemDisabled="#{profileBean.hasProject(ep.entity)}"/>
+							</h:selectOneMenu>
+							<h:commandButton value="Add selected project" 
+											 action="#{profileBean.addProject()}">
+								<f:ajax execute="possible-projects" render="projects-table possible-projects"/>
+							</h:commandButton>
+							<h:panelGroup id="projects-table" styleClass="tabular-container">
+								<h:dataTable value="#{profileBean.editableEmployee.entity.projects}" var="project" 
+											 styleClass="tabular" style="margin-top: 2em;"
+											 columnClasses="w-5,w-flex,w-10">
+									<h:column>
+										<f:facet name="header">ID</f:facet>
+											#{project.id}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Name</f:facet>
+											#{project.name}
+									</h:column>
+									<h:column>
+										<f:facet name="header">Options</f:facet>
+										<h:commandLink value="Remove" action="#{profileBean.removeProject(project)}"/>
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+				</div>
+			</ui:define>
+
+		</ui:composition>
+	</body>
+</html>

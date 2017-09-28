@@ -1,0 +1,80 @@
+.menu-container {
+	display: block;
+}
+
+.menu-bar {
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+	font-size: 0.9em;
+	font-variant: small-caps;
+	background-color: #000000;
+	margin: 0;
+	padding: 0;
+	height: 2.5em;
+}
+
+.menu-bar > li {
+	display: inline-block;
+	margin-left: 1em;
+}
+
+.menu-bar > li > a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.menu-bar > li > a:hover {
+	color: rgb(233, 83, 0);
+	cursor: pointer;
+}
+
+.menu {
+	display: block;
+	position: relative;
+	font-size: 0.75em;
+}
+
+.menu > ul {
+	column-count: 10;
+	list-style-type: none;
+	margin: 0;
+	padding: 1em;
+	background-color: #E0E0E0;
+	border-bottom: solid 1px #B0B0B0;
+	height: 5.6em;
+	column-fill: auto;
+}
+
+.menu > ul > li > a {
+	color: #000000;
+	text-decoration: none;
+}
+
+.menu > ul > li {
+	color: #000000;
+	text-decoration: none;
+	line-height: 1.4em;
+}
+
+.menu > ul > li > a:hover {
+	color: rgb(233, 83, 0);
+	cursor: pointer;
+}
+
+.menu-close {
+	position: absolute;
+	font-size: 2em;
+	top: 0.2em;
+	right: 0.5em;
+}
+
+.menu-close > a {
+	color: #505050;
+	text-decoration: none;
+}
+
+.menu-close > a:hover {
+	color: rgb(233, 83, 0);
+	cursor: pointer;
+}

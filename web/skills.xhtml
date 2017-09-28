@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="./resources/template/app_template.xhtml">
+
+            <ui:define name="content">
+				<h:panelGroup id="add-form-container">
+					<h:panelGroup styleClass="add-form" id="add-form" rendered="#{guiForm.formShowing}">
+						<div class="form-close">
+							<h:commandLink value="&times;" action="#{guiForm.closeForm()}">
+								<f:ajax render="add-form-container"/>
+							</h:commandLink>
+						</div>
+						<div>
+							<h:outputLabel for="input-skill-name" value="Name"/>
+							<h:inputText id="input-skill-name" value="#{skillBean.name}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-skill-desc" value="Description"/>
+							<h:inputTextarea id="input-skill-desc" value="#{skillBean.description}"/>
+						</div>
+						<h:commandButton value="Submit" action="#{skillBean.addEntity()}">
+							<f:actionListener binding="#{guiForm.closeForm()}"/>
+							<f:ajax execute="add-form" render="add-form-container tabular-data"/>
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGroup>
+                <div class="controls">
+					<h:commandButton value="Add skill" action="#{guiForm.showForm()}">
+						<f:ajax render="add-form-container"/>
+					</h:commandButton>
+					<h:commandButton value="Delete selected" action="#{skillBean.deleteEntities()}">
+						<f:ajax execute="tabular-data" render="tabular-data"/>
+					</h:commandButton>
+				</div>
+				<h:panelGroup id="tabular-data" styleClass="tabular-container">
+					<h:dataTable value="#{skillBean.editableEntities}" var="editableSkill" styleClass="tabular" columnClasses="w-10,w-35,w-45,w-10">
+						<h:column>
+							<f:facet name="header">ID</f:facet>
+							<h:selectBooleanCheckbox value="#{editableSkill.removable}"/>
+							#{editableSkill.entity.id}
+						</h:column>
+						<h:column>
+							<f:facet name="header">Name</f:facet>
+							<h:inputText value="#{skillBean.name}" rendered="#{editableSkill.changeable}"/>
+							<h:outputText value="#{editableSkill.entity.name}" rendered="#{not editableSkill.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Description</f:facet>
+							<h:inputTextarea value="#{skillBean.description}" rendered="#{editableSkill.changeable}"/>
+							<h:outputText value="#{editableSkill.entity.description}" rendered="#{not editableSkill.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Options</f:facet>
+							<h:commandLink value="Edit" rendered="#{not editableSkill.changeable}" action="#{skillBean.enableEditing(editableSkill)}"/>
+							<h:commandLink value="Update" rendered="#{editableSkill.changeable}" action="#{skillBean.updateEntity(editableSkill)}"/>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>

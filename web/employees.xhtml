@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./resources/template/app_template.xhtml">
+
+            <ui:define name="content">
+				<h:panelGroup id="add-form-container">
+					<h:panelGroup styleClass="add-form" id="add-form" rendered="#{guiForm.formShowing}">
+						<div class="form-close">
+							<h:commandLink value="&times;" action="#{guiForm.closeForm()}">
+								<f:ajax render="add-form-container"/>
+							</h:commandLink>
+						</div>
+						<div>
+							<h:outputLabel for="input-employee-firstname" value="First name"/>
+							<h:inputText id="input-employee-firstname" value="#{employeeBean.firstName}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-employee-lastname" value="Last name"/>
+							<h:inputText id="input-employee-lastname" value="#{employeeBean.lastName}"/>
+						</div>
+						<h:commandButton value="Submit" action="#{employeeBean.addEntity()}">
+							<f:actionListener binding="#{guiForm.closeForm()}"/>
+							<f:ajax execute="add-form" render="add-form-container tabular-data"/>
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGroup>
+				<div class="controls">
+					<h:commandButton value="Add employee" action="#{guiForm.showForm()}">
+						<f:ajax render="add-form-container"/>
+					</h:commandButton>
+					<h:commandButton value="Delete selected" action="#{employeeBean.deleteEntities()}">
+						<f:ajax execute="tabular-data" render="tabular-data"/>
+					</h:commandButton>
+				</div>
+				<h:panelGroup id="tabular-data" styleClass="tabular-container">
+					<h:dataTable value="#{employeeBean.editableEntities}" var="editableEmployee" styleClass="tabular" columnClasses="w-10,w-40,w-40,w-10">
+						<h:column>
+							<f:facet name="header">ID</f:facet>
+							<h:selectBooleanCheckbox value="#{editableEmployee.removable}"/>
+							#{editableEmployee.entity.id}
+						</h:column>
+						<h:column>
+							<f:facet name="header">First name</f:facet>
+							#{editableEmployee.entity.firstName}
+						</h:column>
+						<h:column>
+							<f:facet name="header">Last name</f:facet>
+							#{editableEmployee.entity.lastName}
+						</h:column>
+						<h:column>
+							<f:facet name="header">Options</f:facet>
+							<h:link value="Profile" outcome="employee" includeViewParams="true">
+								<f:param name="id" value="#{editableEmployee.entity.id}"/>
+							</h:link>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

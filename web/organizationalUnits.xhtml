@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+        <ui:composition template="./resources/template/app_template.xhtml">
+            <ui:define name="content">
+                <h:panelGroup id="add-form-container">
+					<h:panelGroup styleClass="add-form" id="add-form" rendered="#{guiForm.formShowing}">
+						<div class="form-close">
+							<h:commandLink value="&times;" action="#{guiForm.closeForm()}">
+								<f:ajax render="add-form-container"/>
+							</h:commandLink>
+						</div>
+						<div>
+							<h:outputLabel for="input-orgunit-name" value="Name"/>
+							<h:inputText id="input-orgunit-name" value="#{orgUnitBean.name}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-orgunit-desc" value="Description"/>
+							<h:inputTextarea id="input-orgunit-desc" value="#{orgUnitBean.description}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-orgunit-super" value="Superordinate"/>
+							<h:selectOneMenu id="input-orgunit-super" value="#{orgUnitBean.superordinateID}">
+								<f:selectItem itemValue="0" itemLabel=""/>
+								<f:selectItems value="#{orgUnitBean.editableEntities}" 
+											   var="eou"
+											   itemValue="#{eou.entity.id}"
+											   itemLabel="#{eou.entity.name}"/>
+							</h:selectOneMenu>
+						</div>
+						<h:commandButton value="Submit" action="#{orgUnitBean.addEntity()}">
+							<f:actionListener binding="#{guiForm.closeForm()}"/>
+							<f:ajax execute="add-form" render="add-form-container tabular-data"/>
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGroup>
+				<div class="controls">
+					<h:commandButton value="Add unit" action="#{guiForm.showForm()}">
+						<f:ajax render="add-form-container"/>
+					</h:commandButton>
+					<h:commandButton value="Delete selected" action="#{orgUnitBean.deleteEntities()}">
+						<f:ajax execute="tabular-data" render="tabular-data"/>
+					</h:commandButton>
+				</div>
+				<h:panelGroup id="tabular-data" styleClass="tabular-container">
+					<h:dataTable value="#{orgUnitBean.editableEntities}" var="editableOrgUnit" styleClass="tabular" columnClasses="w-10,w-15,w-25,w-15,w-25,w-10">
+						<h:column>
+							<f:facet name="header">ID</f:facet>
+							<h:selectBooleanCheckbox value="#{editableOrgUnit.removable}"/>
+							#{editableOrgUnit.entity.id}
+						</h:column>
+						<h:column>
+							<f:facet name="header">Name</f:facet>
+							<h:outputText value="#{editableOrgUnit.entity.name}" rendered="#{not editableOrgUnit.changeable}"/>
+							<h:inputText value="#{orgUnitBean.name}" rendered="#{editableOrgUnit.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Description</f:facet>
+							<h:outputText value="#{editableOrgUnit.entity.description}" rendered="#{not editableOrgUnit.changeable}"/>
+							<h:inputTextarea value="#{orgUnitBean.description}" rendered="#{editableOrgUnit.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Superordinate</f:facet>
+							<h:outputText value="#{editableOrgUnit.entity.superordinate.name}" rendered="#{not editableOrgUnit.changeable}"/>
+							<h:selectOneMenu value="#{orgUnitBean.superordinateID}" rendered="#{editableOrgUnit.changeable}">
+								<f:selectItem itemValue="0" itemLabel=""/>
+								<f:selectItems value="#{orgUnitBean.editableEntities}" 
+											   var="eou"
+											   itemValue="#{eou.entity.id}"
+											   itemLabel="#{eou.entity.name}"
+											   itemDisabled="#{orgUnitBean.equalbyId(eou, editableOrgUnit)}"/>
+							</h:selectOneMenu>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Subordinates</f:facet>
+							<h:outputText value="#{orgUnitBean.printSubordinates(editableOrgUnit)}" rendered="#{not editableOrgUnit.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Options</f:facet>
+							<h:commandLink value="Edit" rendered="#{not editableOrgUnit.changeable}" action="#{orgUnitBean.enableEditing(editableOrgUnit)}"/>
+							<h:commandLink value="Update" rendered="#{editableOrgUnit.changeable}" action="#{orgUnitBean.updateEntity(editableOrgUnit)}">
+								<f:actionListener binding="#{jobBean.setShouldFetchEntities(true)}"/>
+							</h:commandLink>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

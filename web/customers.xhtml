@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./resources/template/app_template.xhtml">
+
+            <ui:define name="content">
+                <h:panelGroup id="add-form-container">
+					<h:panelGroup styleClass="add-form" id="add-form" rendered="#{guiForm.formShowing}">
+						<div class="form-close">
+							<h:commandLink value="&times;" action="#{guiForm.closeForm()}">
+								<f:ajax render="add-form-container"/>
+							</h:commandLink>
+						</div>
+						<div>
+							<h:outputLabel for="input-customer-name" value="Name"/>
+							<h:inputText id="input-customer-name" value="#{customerBean.name}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-customer-address" value="Address"/>
+							<h:inputText id="input-customer-address" value="#{customerBean.address}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-customer-email" value="Email address"/>
+							<h:inputText id="input-customer-email" value="#{customerBean.emailAddress}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-customer-phone" value="Phone number"/>
+							<h:inputText id="input-customer-phone" value="#{customerBean.phoneNumber}"/>
+						</div>
+						<h:commandButton value="Submit" action="#{customerBean.addEntity()}">
+							<f:actionListener binding="#{guiForm.closeForm()}"/>
+							<f:ajax execute="add-form" render="add-form-container tabular-data"/>
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGroup>
+				<div class="controls">
+					<h:commandButton value="Add customer" action="#{guiForm.showForm()}">
+						<f:ajax render="add-form-container"/>
+					</h:commandButton>
+					<h:commandButton value="Delete selected" action="#{customerBean.deleteEntities()}">
+						<f:ajax execute="tabular-data" render="tabular-data"/>
+					</h:commandButton>
+				</div>
+				<h:panelGroup id="tabular-data" styleClass="tabular-container">
+					<h:dataTable value="#{customerBean.editableEntities}" var="editableCustomer" styleClass="tabular" columnClasses="w-10,w-20,w-20,w-20,w-20,w-10">
+						<h:column>
+							<f:facet name="header">ID</f:facet>
+							<h:selectBooleanCheckbox value="#{editableCustomer.removable}"/>
+							#{editableCustomer.entity.id}
+						</h:column>
+						<h:column>
+							<f:facet name="header">Name</f:facet>
+							<h:inputText value="#{customerBean.name}" rendered="#{editableCustomer.changeable}"/>
+							<h:outputText value="#{editableCustomer.entity.name}" rendered="#{not editableCustomer.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Address</f:facet>
+							<h:inputText value="#{customerBean.address}" rendered="#{editableCustomer.changeable}"/>
+							<h:outputText value="#{editableCustomer.entity.address}" rendered="#{not editableCustomer.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Email address</f:facet>
+							<h:inputText value="#{customerBean.emailAddress}" rendered="#{editableCustomer.changeable}"/>
+							<h:outputText value="#{editableCustomer.entity.emailAddress}" rendered="#{not editableCustomer.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Phone number</f:facet>
+							<h:inputText value="#{customerBean.phoneNumber}" rendered="#{editableCustomer.changeable}"/>
+							<h:outputText value="#{editableCustomer.entity.phoneNumber}" rendered="#{not editableCustomer.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Options</f:facet>
+							<h:commandLink value="Edit" rendered="#{not editableCustomer.changeable}" action="#{customerBean.enableEditing(editableCustomer)}"/>
+							<h:commandLink value="Update" rendered="#{editableCustomer.changeable}" action="#{customerBean.updateEntity(editableCustomer)}"/>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

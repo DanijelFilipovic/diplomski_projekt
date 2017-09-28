@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        <ui:composition template="./resources/template/app_template.xhtml">
+
+            <ui:define name="content">
+				<h:panelGroup id="add-form-container">
+					<h:panelGroup styleClass="add-form" id="add-form" rendered="#{guiForm.formShowing}">
+						<div class="form-close">
+							<h:commandLink value="&times;" action="#{guiForm.closeForm()}">
+								<f:ajax render="add-form-container"/>
+							</h:commandLink>
+						</div>
+						<div>
+							<h:outputLabel for="input-license-name" value="Name"/>
+							<h:inputText id="input-license-name" value="#{licenseBean.name}"/>
+						</div>
+						<div>
+							<h:outputLabel for="input-license-desc" value="Description"/>
+							<h:inputTextarea id="input-license-desc" value="#{licenseBean.description}"/>
+						</div>
+						<h:commandButton value="Submit" action="#{licenseBean.addEntity()}">
+							<f:actionListener binding="#{guiForm.closeForm()}"/>
+							<f:ajax execute="add-form" render="add-form-container tabular-data"/>
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGroup>
+                <div class="controls">
+					<h:commandButton value="Add license" action="#{guiForm.showForm()}">
+						<f:ajax render="add-form-container"/>
+					</h:commandButton>
+					<h:commandButton value="Delete selected" action="#{licenseBean.deleteEntities()}">
+						<f:ajax execute="tabular-data" render="tabular-data"/>
+					</h:commandButton>
+				</div>
+				<h:panelGroup id="tabular-data" styleClass="tabular-container">
+					<h:dataTable value="#{licenseBean.editableEntities}" var="editableLicense" styleClass="tabular" columnClasses="w-10,w-35,w-45,w-10">
+						<h:column>
+							<f:facet name="header">ID</f:facet>
+							<h:selectBooleanCheckbox value="#{editableLicense.removable}"/>
+							<h:outputText value="#{editableLicense.entity.id}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Name</f:facet>
+							<h:inputText value="#{licenseBean.name}" rendered="#{editableLicense.changeable}"/>
+							<h:outputText value="#{editableLicense.entity.name}" rendered="#{not editableLicense.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Description</f:facet>
+							<h:inputTextarea value="#{licenseBean.description}" rendered="#{editableLicense.changeable}"/>
+							<h:outputText value="#{editableLicense.entity.description}" rendered="#{not editableLicense.changeable}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Options</f:facet>
+							<h:commandLink value="Edit" rendered="#{not editableLicense.changeable}" action="#{licenseBean.enableEditing(editableLicense)}"/>
+							<h:commandLink value="Update" rendered="#{editableLicense.changeable}" action="#{licenseBean.updateEntity(editableLicense)}"/>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:outputStylesheet library="css" name="default.css"/>
+		<h:outputStylesheet library="css" name="menu.css"/>
+		<h:outputStylesheet library="css" name="tabular.css"/>
+		<ui:insert name="libraries"/>
+        <title>Diplomski</title>
+    </h:head>
+    <h:body>
+		<h:form id="form">
+			<div id="menu-bar" class="menu-container">
+				<ul class="menu-bar">
+					<li>
+						<h:commandLink value="Organization" action="#{guiMenu.showOrganizationMenu()}">
+							<f:ajax render="menus"/>
+						</h:commandLink>
+					</li>
+					<li>
+						<h:commandLink value="Employee" action="#{guiMenu.showEmployeeMenu()}">
+							<f:ajax render="menus"/>
+						</h:commandLink>
+					</li>
+					<li>
+						<h:commandLink value="Customer" action="#{guiMenu.showCustomerMenu()}">
+							<f:ajax render="menus"/>
+						</h:commandLink>
+					</li>
+				</ul>
+
+				<h:panelGroup id="menus">
+					<h:panelGroup styleClass="menu" rendered="#{guiMenu.organizationMenuShowing}">
+						<div class="menu-close">
+							<h:commandLink value="&times;" action="#{guiMenu.closeMenus()}">
+								<f:ajax render="menus"/>
+							</h:commandLink>
+						</div>
+						<ul>
+							<li><h:link value="Organizational units" outcome="organizationalUnits"/></li>
+							<li><h:link value="Jobs" outcome="jobs"/></li>
+						</ul>
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="menu" rendered="#{guiMenu.employeeMenuShowing}">
+						<div class="menu-close">
+							<h:commandLink value="&times;" action="#{guiMenu.closeMenus()}">
+								<f:ajax render="menus"/>
+							</h:commandLink>
+						</div>
+						<ul>
+							<li><h:link value="Employees" outcome="employees"/></li>
+							<li><h:link value="Employment status" outcome="employmentStatuses"/></li>
+							<li><h:link value="Skills" outcome="skills"/></li>
+							<li><h:link value="Licenses" outcome="licenses" /></li>
+							<li><h:link value="Trainings" outcome="trainings"/></li>
+						</ul>
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="menu" rendered="#{guiMenu.customerMenuShowing}">
+						<div class="menu-close">
+							<h:commandLink value="&times;" action="#{guiMenu.closeMenus()}">
+								<f:ajax render="menus"/>
+							</h:commandLink>
+						</div>
+						<ul>
+							<li><h:link value="Customers" outcome="customers"/></li>
+							<li><h:link value="Projects" outcome="projects"/></li>
+						</ul>
+					</h:panelGroup>
+				</h:panelGroup>
+			</div>
+			<div id="content" class="content">
+				<ui:insert name="content"/>
+			</div>
+		</h:form>
+    </h:body>
+</html>

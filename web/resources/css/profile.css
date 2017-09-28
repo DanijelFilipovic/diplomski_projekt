@@ -1,0 +1,102 @@
+.employee-profile {
+	display: flex;
+}
+
+.employee-controls {
+	width: 10%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.employee-data {
+	display: inline-block;
+	position: relative;
+	padding: 2em;
+	background-color: #E0E0E0;
+	border: solid 1px #B0B0B0;
+	flex: 1;
+	height: fit-content;
+	font-size: 0.9em;
+}
+
+.textfield {
+	background-color: WHITE;
+	color: #505050;
+	border: solid 1px #B0B0B0;
+	font-size: 0.9em;
+	width: 13em;
+	display: inline-block;
+	height: 1.6em;
+	vertical-align: middle;
+	line-height: 1.6em;
+}
+
+.vertical-container {
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin-bottom: 0.5em;
+}
+
+.employee-controls > input[type=submit] {
+	display: block;
+	margin-bottom: 1em;
+}
+
+.employee-controls > input[type=submit]:last-child {
+	margin-bottom: 0;
+}
+
+.employee-data label {
+	margin-left: 3em;
+	vertical-align: middle;
+	width: 6em;
+}
+
+.employee-data label:first-child {
+	margin-left: 0;
+}
+
+.employee-data input[type=text] {
+	width: 13em;
+}
+
+.employee-data select {
+	margin-left: -1px;
+	height: 1.7em;
+}
+
+.employee-data select > option:disabled {
+	display: none;
+}
+
+fieldset {
+	margin: 2em 0;
+	padding: 1em 1em 1.5em 1em;
+}
+
+fieldset .vertical-container:last-child {
+	margin-bottom: 0;
+}
+
+fieldset > .vertical-container > label {
+	width: 4.8em;
+}
+
+legend {
+	font-size: 0.75em;
+}
+
+fieldset.smaller-fieldset {
+	margin: 0 0 2em 0;
+	padding: 1em 1em 0 1em;
+	display: inline-block;
+}
+
+.ui-timepicker-wrapper {
+	font-size: 0.9em;
+}
+
+.horizontal-container {
+	display: flex;
+	flex-direction: row;
+}
